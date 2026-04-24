@@ -1,0 +1,22 @@
+{
+  "name": "chicken-validator",
+  "version": "1.0.0",
+  "description": "MiniMax vision API — check if image contains chicken food",
+  "main": "dist/check-chicken-food.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/check-chicken-food.ts",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "^2210.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.2"
+  }
+}
