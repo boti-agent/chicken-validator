@@ -8,6 +8,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 // ============ Types ============
 
@@ -211,29 +214,24 @@ export async function analyzeImage(fileId: number, apiKey: string): Promise<Vali
 
 // ============ CLI Logic ============
 
-function validateArgs(): void {
-  const apiKey = process.argv[2];
-  const imagePath = process.argv[3];
+async function main(): Promise<void> {
+  const apiKey = process.env.MINIMAX_API_KEY;
+  const imagePath = process.argv[2];
+
+  if (!apiKey) {
+    console.error('❌ Error: MINIMAX_API_KEY environment variable is not set.');
+    console.error('   Create a .env file with: MINIMAX_API_KEY=your_key');
+    process.exit(1);
+  }
 
   if (!imagePath) {
-    console.error('Usage: npx ts-node src/check-chicken-food.ts <api_key> <image_path>');
+    console.error('Usage: npx ts-node src/check-chicken-food.ts <image_path>');
     process.exit(1);
   }
-  if (!apiKey) {
-    console.error('Error: Provide MINIMAX_API_KEY env var or 1st argument');
-    process.exit(1);
-  }
-}
-
-export async function main(): Promise<void> {
-  const apiKey = process.argv[2] || process.env.MINIMAX_API_KEY || '';
-  const imagePath = process.argv[3];
-
-  validateArgs();
 
   try {
     console.error(`📤 Uploading ${imagePath}...`);
-    const file = await uploadFile(imagePath!, apiKey);
+    const file = await uploadFile(imagePath, apiKey);
     console.error(`✅ Uploaded! file_id: ${file.file_id}`);
 
     console.error(`🔍 Analyzing image...`);
@@ -246,3 +244,5 @@ export async function main(): Promise<void> {
     process.exit(1);
   }
 }
+
+main();
